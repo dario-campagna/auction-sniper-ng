@@ -5,7 +5,7 @@ var Strophe = strophe.Strophe;
 export class FakeAuctionServer {
 
   private static BROKER: string = "http://localhost:7070/http-bind";
-  private static AUCTION_RESOURCE: string = "auction";
+  private static AUCTION_RESOURCE: string = "Auction";
   private static ITEM_ID_AS_LOGIN: string = "auction-";
   private static AUCTION_PASSWORD: string = "auction";
 
@@ -23,7 +23,7 @@ export class FakeAuctionServer {
     let jid = FakeAuctionServer.ITEM_ID_AS_LOGIN + this.itemId +
       '@localhost/' + FakeAuctionServer.AUCTION_RESOURCE;
     this._connection.connect(jid, FakeAuctionServer.AUCTION_PASSWORD);
-    this._connection.addHandler(this._singleMessageListener.processMessage, null, 'auction', null, null, null);
+    this._connection.addHandler(this._singleMessageListener.processMessage, null, 'message', null, null, null);
   }
 
   hasReceivedJoiningRequestFromSniper() {
@@ -33,7 +33,8 @@ export class FakeAuctionServer {
   announceClosed() {
     let attributes = {
       to: 'localhost/' + FakeAuctionServer.AUCTION_RESOURCE,
-      from: FakeAuctionServer.ITEM_ID_AS_LOGIN + this._itemId + '@localhost/' + FakeAuctionServer.AUCTION_RESOURCE
+      from: FakeAuctionServer.ITEM_ID_AS_LOGIN + this._itemId + '@localhost/' + FakeAuctionServer.AUCTION_RESOURCE,
+      type: 'message'
     };
     this._connection.send(strophe.$msg(attributes));
   }
