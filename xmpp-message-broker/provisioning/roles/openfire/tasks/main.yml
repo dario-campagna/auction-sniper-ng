@@ -1,0 +1,21 @@
+---
+# tasks file for openfire version 4.1.2
+
+- name: Run the equivalent of "apt-get update"
+  apt:
+    update_cache: yes
+
+- name: Install latest version of openjdk-8-jre-headless
+  apt:
+    name: openjdk-8-jre-headless
+    state: latest
+
+- name: Install openfire .deb package
+  apt:
+    deb: https://www.igniterealtime.org/downloadServlet?filename=openfire/openfire_4.1.2_all.deb
+
+- name: Start openfire
+  service:
+    name: openfire
+    state: restarted
+    enabled: yes
