@@ -8,10 +8,11 @@ export class SingleMessageListener {
 
   processMessage(msg) {
     this._messages.push(msg);
+    return true;
   }
 
   receivesAMessage() {
-    expect(this._messages.length).toBeGreaterThan(0)
+    expect(this._messages.length).toBeGreaterThan(0);
   }
 
 }

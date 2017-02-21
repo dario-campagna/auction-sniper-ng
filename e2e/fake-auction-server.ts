@@ -1,4 +1,4 @@
-import {SingleMessageListener} from "./singleMessageListener";
+import {SingleMessageListener} from "./single-message-listener";
 var strophe = require("node-strophe").Strophe;
 var Strophe = strophe.Strophe;
 
@@ -10,7 +10,7 @@ export class FakeAuctionServer {
   private static AUCTION_PASSWORD: string = "auction";
 
   private _itemId: string;
-  private _connection: any;
+  private _connection: Strophe.Connection;
   private _singleMessageListener: SingleMessageListener;
 
   constructor(itemId: string) {
@@ -39,7 +39,7 @@ export class FakeAuctionServer {
   }
 
   stop(){
-    this._connection.disconnect();
+    this._connection.disconnect('');
   }
 
   get itemId(): string {

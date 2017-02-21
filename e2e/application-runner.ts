@@ -1,5 +1,5 @@
-import {FakeAuctionServer} from "./fakeAuctionServer";
-import {AuctionSniperPage} from "./auctionSniperPage";
+import {FakeAuctionServer} from "./fake-auction-server";
+import {AuctionSniperPage} from "./auction-sniper.po";
 
 export class ApplicationRunner {
 

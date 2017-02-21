@@ -1,5 +1,5 @@
-import {FakeAuctionServer} from './fakeAuctionServer';
-import {ApplicationRunner} from './applicationRunner';
+import {FakeAuctionServer} from './fake-auction-server';
+import {ApplicationRunner} from './application-runner';
 
 describe('auction-sniper end to end test', () => {
 
