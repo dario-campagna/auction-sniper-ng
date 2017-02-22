@@ -1,5 +1,6 @@
 import {FakeAuctionServer} from "./fake-auction-server";
 import {AuctionSniperPage} from "./auction-sniper.po";
+import {browser} from "protractor";
 
 export class ApplicationRunner {
 
@@ -14,6 +15,7 @@ export class ApplicationRunner {
   }
 
   showsSniperHasLostAuction() {
+    browser.sleep(1000);
     this.auctionSniperPage.showSniperStatus("Lost");
   }
 }

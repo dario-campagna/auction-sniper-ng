@@ -1,4 +1,4 @@
-import {browser, element, by} from 'protractor';
+import {browser, element, by} from "protractor";
 
 export class AuctionSniperPage {
 
@@ -12,13 +12,13 @@ export class AuctionSniperPage {
     this.auctionId = auctionId;
   }
 
-  navigateTo() {
-    return browser.get('/' + this.auctionId +
+  navigateTo(): void {
+    browser.get('/' + this.auctionId +
       '?sniper_id=' + this.sniperId +
       '&sniper_password=' + this.sniperPassword);
   }
 
-  showSniperStatus(status: string) {
+  showSniperStatus(status: string): void {
     expect(element(by.css('app-root h1')).getText()).toEqual(status);
   }
 }

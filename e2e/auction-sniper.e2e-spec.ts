@@ -1,5 +1,6 @@
-import {FakeAuctionServer} from './fake-auction-server';
-import {ApplicationRunner} from './application-runner';
+import {FakeAuctionServer} from "./fake-auction-server";
+import {ApplicationRunner} from "./application-runner";
+import {browser} from "protractor";
 
 describe('auction-sniper end to end test', () => {
 
@@ -16,11 +17,20 @@ describe('auction-sniper end to end test', () => {
   });
 
   it('Sniper joins auction until auction closes', () => {
-    auction.startSellingItem();
-    application.startBiddingIn(auction);
-    auction.hasReceivedJoiningRequestFromSniper();
-    auction.announceClosed();
-    application.showsSniperHasLostAuction();
+    browser.wait(() => {
+      return auction.startSellingItem().then(() => {return true;})
+    }).then(() => {
+      application.startBiddingIn(auction);
+      browser.wait(() => {
+        return auction.hasReceivedJoiningRequestFromSniper().then(() => {
+          return true;
+        });
+      }).then(() => {
+        auction.announceClosed();
+        application.showsSniperHasLostAuction();
+      });
+    });
+
   });
 
 });

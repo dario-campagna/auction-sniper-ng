@@ -1,6 +1,7 @@
 import {SingleMessageListener} from "./single-message-listener";
-var strophe = require("node-strophe").Strophe;
-var Strophe = strophe.Strophe;
+import {protractor, browser} from "protractor";
+let strophe = require("node-strophe").Strophe;
+let Strophe = strophe.Strophe;
 
 export class FakeAuctionServer {
 
@@ -19,27 +20,34 @@ export class FakeAuctionServer {
     this._singleMessageListener = new SingleMessageListener();
   }
 
-  startSellingItem() {
-    let jid = FakeAuctionServer.ITEM_ID_AS_LOGIN + this.itemId +
+  startSellingItem(): any {
+    let jid = FakeAuctionServer.ITEM_ID_AS_LOGIN + this._itemId +
       '@localhost/' + FakeAuctionServer.AUCTION_RESOURCE;
-    this._connection.connect(jid, FakeAuctionServer.AUCTION_PASSWORD);
-    this._connection.addHandler(this._singleMessageListener.processMessage, null, 'message', null, null, null);
+    let deferred = protractor.promise.defer();
+    this._connection.connect(jid, FakeAuctionServer.AUCTION_PASSWORD, (status) => {
+      if (status === Strophe.Status.CONNECTED) {
+        this._connection.addHandler(this._singleMessageListener.processMessage(), null, 'message', null, null, null);
+        this._connection.send(strophe.$pres().tree());
+        deferred.fulfill();
+      }
+    });
+    return deferred.promise;
   }
 
-  hasReceivedJoiningRequestFromSniper() {
-    this._singleMessageListener.receivesAMessage();
+  hasReceivedJoiningRequestFromSniper(): any {
+    return this._singleMessageListener.receivesAMessage();
   }
 
   announceClosed() {
     let attributes = {
-      to: 'localhost/' + FakeAuctionServer.AUCTION_RESOURCE,
+      to: 'sniper@localhost/' + FakeAuctionServer.AUCTION_RESOURCE,
       from: FakeAuctionServer.ITEM_ID_AS_LOGIN + this._itemId + '@localhost/' + FakeAuctionServer.AUCTION_RESOURCE,
-      type: 'message'
+      type: 'chat'
     };
-    this._connection.send(strophe.$msg(attributes));
+    this._connection.send(strophe.$msg(attributes).c('body',[],'ping').tree());
   }
 
-  stop(){
+  stop() {
     this._connection.disconnect('');
   }
 
